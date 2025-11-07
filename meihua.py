@@ -8,7 +8,7 @@
 import datetime
 import socket
 import hashlib
-from typing import Tuple, Dict, List
+from typing import Tuple, Dict
 
 
 class MeihuaYishu:
@@ -131,11 +131,10 @@ class MeihuaYishu:
         if ip is None:
             # 获取本机IP地址
             try:
-                s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-                s.connect(("8.8.8.8", 80))
-                ip = s.getsockname()[0]
-                s.close()
-            except:
+                with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as s:
+                    s.connect(("8.8.8.8", 80))
+                    ip = s.getsockname()[0]
+            except (OSError, socket.error):
                 ip = "127.0.0.1"
         
         # 使用SHA256哈希算法
@@ -444,7 +443,7 @@ def main():
         if category not in categories:
             print("无效的类别，使用默认类别：人事占")
             category = 2
-    except:
+    except ValueError:
         print("输入无效，使用默认类别：人事占")
         category = 2
     
