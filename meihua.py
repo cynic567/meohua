@@ -8,7 +8,7 @@
 import datetime
 import socket
 import hashlib
-from typing import Tuple, Dict
+from typing import Tuple, Dict, Any
 
 
 class MeihuaYishu:
@@ -251,7 +251,7 @@ class MeihuaYishu:
         # 简化处理，这里可以根据更复杂的规则计算
         return mutual_upper, mutual_lower
     
-    def analyze_body_use(self) -> Dict[str, any]:
+    def analyze_body_use(self) -> Dict[str, Any]:
         """分析体用关系"""
         # 动爻所在的卦为用卦，另一卦为体卦
         if self.moving_line <= 3:
