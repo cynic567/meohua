@@ -14,6 +14,9 @@ from typing import Tuple, Dict, Any
 class MeihuaYishu:
     """梅花易数占卜系统"""
     
+    # DNS服务器地址用于获取本机IP
+    DNS_SERVER = "8.8.8.8"
+    
     # 先天八卦数 (Prior Heaven Trigram Numbers)
     # 乾一，兑二，离三，震四，巽五，坎六，艮七，坤八
     TRIGRAM_NAMES = {
@@ -106,8 +109,9 @@ class MeihuaYishu:
         self.mutual_hexagram = None
         
     def get_current_time_value(self) -> Tuple[int, int, int, int, int]:
-        """获取当前农历时间值（简化版使用公历）
-        返回: (年, 月, 日, 时辰, 时辰数)
+        """获取当前时间值
+        注：本程序使用公历时间简化处理，实际应用中可配合真实农历
+        返回: (年, 月, 日, 时辰(小时), 时辰数)
         """
         now = datetime.datetime.now()
         year = now.year
@@ -132,7 +136,7 @@ class MeihuaYishu:
             # 获取本机IP地址
             try:
                 with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as s:
-                    s.connect(("8.8.8.8", 80))
+                    s.connect((self.DNS_SERVER, 80))
                     ip = s.getsockname()[0]
             except (OSError, socket.error):
                 ip = "127.0.0.1"
@@ -196,7 +200,19 @@ class MeihuaYishu:
         return self.upper_trigram, self.lower_trigram, self.moving_line
     
     def get_hexagram_name(self, upper: int, lower: int) -> str:
-        """获取卦名"""
+        """获取卦名
+        
+        Args:
+            upper: 上卦编号 (1-8)
+            lower: 下卦编号 (1-8)
+            
+        Returns:
+            卦名字符串
+        """
+        # 验证输入范围
+        if upper not in range(1, 9) or lower not in range(1, 9):
+            return "未知卦"
+            
         key = upper * 10 + lower
         return self.HEXAGRAM_NAMES.get(key, f"{self.TRIGRAM_NAMES[upper]}{self.TRIGRAM_NAMES[lower]}")
     
@@ -235,20 +251,19 @@ class MeihuaYishu:
         return binary_to_trigram[binary]
     
     def get_mutual_hexagram(self) -> Tuple[int, int]:
-        """获取互卦"""
-        # 互卦取本卦的2、3、4爻为下卦，3、4、5爻为上卦
-        # 这里简化处理，根据主卦的五行属性推导
+        """获取互卦
+        
+        注：互卦的完整计算需要知道六爻的具体阴阳配置
+        本实现为简化版本，仅返回主卦作为占位
+        TODO: 实现完整的互卦计算逻辑（取本卦2、3、4爻为下卦，3、4、5爻为上卦）
+        """
+        # 简化版本：返回主卦
         # 实际应该根据六爻的具体情况计算
+        # 互卦取本卦的2、3、4爻为下卦，3、4、5爻为上卦
         
-        # 简化版本：使用主卦的变化
-        upper_element = self.TRIGRAM_ELEMENTS[self.upper_trigram]
-        lower_element = self.TRIGRAM_ELEMENTS[self.lower_trigram]
-        
-        # 根据五行生成关系推导互卦
         mutual_upper = self.upper_trigram
         mutual_lower = self.lower_trigram
         
-        # 简化处理，这里可以根据更复杂的规则计算
         return mutual_upper, mutual_lower
     
     def analyze_body_use(self) -> Dict[str, Any]:
