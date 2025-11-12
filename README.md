@@ -46,11 +46,19 @@ python3 meihua_web.py
 # 在浏览器中访问 http://localhost:5000
 ```
 
-#### 方法三：桌面GUI版本
+#### 方法三：桌面GUI版本（推荐，完整功能）
+
+**无需安装任何GUI库，只使用Python标准库！**
 
 ```bash
 python3 meihua_gui.py
 ```
+
+程序会自动启动本地服务器并在浏览器中打开应用界面。
+- 自动管理服务器启动和关闭
+- 类似桌面应用的使用体验
+- 支持所有平台（Windows/Mac/Linux）
+- 按 Ctrl+C 退出程序
 
 ### 使用方法
 
