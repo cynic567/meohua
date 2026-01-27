@@ -20,6 +20,14 @@ wheels/
 .installed.cfg
 *.egg
 
+# Environment
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
 # Virtual environments
 venv/
 ENV/
@@ -32,6 +40,8 @@ env/
 *.swo
 *~
 
+# Config
+config.json
 # OS
 .DS_Store
 Thumbs.db
