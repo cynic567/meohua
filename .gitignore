@@ -28,6 +28,10 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+# Virtual environments
+venv/
+ENV/
+env/
 
 # IDE
 .vscode/
@@ -38,3 +42,6 @@ venv.bak/
 
 # Config
 config.json
+# OS
+.DS_Store
+Thumbs.db
